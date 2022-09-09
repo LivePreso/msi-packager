@@ -15,6 +15,7 @@ module.exports = function(options, cb) {
   //  iconPath
   //  executable
   //  localInstall
+  //  registry
 
   writeXml(options, function (err, path) {
     var args = [path, '-o', options.output]
@@ -22,8 +23,7 @@ module.exports = function(options, cb) {
     if (options.arch) {
       args.push('--arch', options.arch)
     }
-
-    execFile('wixl', args, cb)
+    execFile('wixl', args, cb);
   })
 }
 
@@ -32,7 +32,6 @@ function writeXml(options, cb) {
     generateXml(options, function(err, xml) {
       fs.write(info.fd, xml, function(err) {
         if (err) return cb(err)
-        
         fs.close(info.fd, function (err) {
           if (err) return cb(err)
           return cb(null, info.path)
