@@ -275,6 +275,11 @@ function getComponents(path, options, cb) {
             });
           } else {
             var id = escapeId(subPath);
+
+            if (subPath === options.executable) {
+                id = "mainExecutableFile";
+            }
+
             ids.push(id);
 
             entry = entry.replace(new RegExp("\\$", "g"), "$$$$");
