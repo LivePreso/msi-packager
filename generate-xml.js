@@ -9,41 +9,6 @@ function generateXml(options, cb) {
   getComponents(".", options, function (err, components, ids) {
     if (err) return cb(err);
 
-    //console.log(options);
-    //if ("registry" in options) {
-    //  let registryElements = options.registry.map(({ Root, Key, Values }) => {
-    //    return el(
-    //      "RegistryKey",
-    //      {
-    //        Root,
-    //        Key,
-    //        Action: "createAndRemoveOnUninstall",
-    //      },
-    //      Values.map((options) => {
-    //        let registryValues = {};
-    //        for (const key of ["Type", "Name", "Value"]) {
-    //             if (options[key]) {
-    //                 registryValues[key] = options[key];
-    //            }
-    //        }
-    //        return el("RegistryValue",registryValues);
-    //      })
-    //    );
-    //  });
-
-    //  const registryComponent = el(
-    //    "Component",
-    //    {
-    //      Id: "RegistryEntries",
-    //      Guid: "*",
-    //    },
-    //    registryElements
-    //  );
-
-
-    //  components.push(registryComponent);
-    //  ids.push("RegistryEntries");
-    //}
     var optionsWithIds = Object.create(options);
     optionsWithIds.componentIds = ids;
 
@@ -126,13 +91,6 @@ function installerFor(components, options) {
           ),
 
           options.runAfter
-            ? el("Property", {
-                Id: "cmd",
-                Value: "cmd.exe",
-              })
-            : "",
-
-          options.runAfter
             ? el("CustomAction", {
                 Id: "LaunchInstalledExe",
                 FileKey: "mainExecutableFile", 
@@ -160,7 +118,7 @@ function installerFor(components, options) {
           ]),
 
           el("Package", {
-            InstallerVersion: "200",
+            InstallerVersion: "500",
             Compressed: "yes",
             Comments: "Windows Installer Package",
             InstallScope: options.localInstall ? "perUser" : "perMachine",
