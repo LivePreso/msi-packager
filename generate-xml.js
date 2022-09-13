@@ -134,16 +134,12 @@ function installerFor(components, options) {
 
           options.runAfter
             ? el("CustomAction", {
-                Id: "LaunchApplication",
-                ExeCommand:
-                  '/c start "" "%programfiles%\\' +
-                  options.name +
-                  "\\" +
-                  options.executable +
-                  '"',
-                Execute: "",
-                Property: "cmd",
+                Id: "LaunchInstalledExe",
+                FileKey: "mainExecutableFile", 
+                ExeCommand: "", 
+                Execute: "immediate",
                 Impersonate: "yes",
+                Return: "asyncNoWait",
               })
             : "",
 
@@ -155,24 +151,13 @@ function installerFor(components, options) {
               ? el(
                   "Custom",
                   {
-                    Action: "LaunchApplication",
+                    Action: "LaunchInstalledExe",
                     After: "InstallFinalize",
                   },
                   ["NOT Installed"]
                 )
               : "",
           ]),
-
-          options.runAfter
-            ? el("CustomAction", {
-                Id: "LaunchInstalledExe",
-                FileKey: "mainExecutableFile", // what goes here?
-                ExeCommand: "", // and here?
-                Execute: "immediate",
-                Impersonate: "yes",
-                Return: "asyncNoWait",
-              })
-            : "",
 
           el("Package", {
             InstallerVersion: "200",
